@@ -6,4 +6,45 @@
     background-color: aqua;
     width: 100%;
     height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#addNewBook {
+    background-color: white;
+    border: black solid 2px;
+    height: 30px;
+}
+
+#bookCards {
+    display:flex;
+    flex-wrap: wrap;
+}
+.bookCard{
+    position: relative;
+    display: table;
+    text-align: center;
+    margin:10px;
+    background-color: rgb(226, 144, 88);
+    height: 250px;
+    width:200px;
+}
+.bookCard p{
+    margin:8px;
+}
+.bookCard h2{
+    margin:12px;
+}
+.bookCard button{
+    position: absolute;
+    width:120px;
+    height:40px;
+    bottom:40px;
+    left:50%;
+    margin-left:-60px;
+    font-size: large;
+    background-color: rgb(238, 218, 195);
+    color:rgb(32, 121, 5);
+
+
 }
