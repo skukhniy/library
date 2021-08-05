@@ -1,29 +1,36 @@
 let myLibrary = [];
 
 // set up a book obj
-function Book(author,title,numPages,readStatus) {
-    this.author = author
+function Book(title,author,numPages) {
     this.title = title
+    this.author = author
     this.numPages = numPages
-    this.readStatus = readStatus
+    this.readStatus = false
 }
 
 // add new book object to the Lib
 function addBookToLibrary(bookObj) {
     myLibrary.push(bookObj)
+    console.log(myLibrary)
 }
 
+// query Selectors that select elements related to the modal popup form
 const openModalButton = document.querySelector('[data-modal-target]')
-const closeModalButton = document.querySelector('[data-modal-close]')
+const closeModalButtons = document.querySelectorAll('[data-modal-close]')
 const overlay = document.getElementById('overlay')
+const btnSubmit = document.getElementById('btnSubmit')
 
+//will add an active class so the form pops up
 openModalButton.addEventListener('click',() =>{
     const modal = document.querySelector(openModalButton.dataset.modalTarget)
     openModal(modal)
 })
-closeModalButton.addEventListener('click',() =>{
-    const modal = closeModalButton.closest('.modal')
+// removes the active class so the form goes down
+closeModalButtons.forEach(button => {
+    button.addEventListener('click',() =>{
+    const modal = button.closest('.modal')
     closeModal(modal)
+    })
 })
 function openModal(modal){
     if(modal == null) return
@@ -35,10 +42,56 @@ function closeModal(modal){
     modal.classList.remove('active')
     overlay.classList.remove('active')
 }
+// on clicking submit the inputs will be gathered to create a new card.
+btnSubmit.addEventListener('click',()=>{
+    console.log('title =')
+    var title = document.getElementById('title').value
+    console.log(title)
+    var author = document.getElementById('author').value
+    console.log(author)
+    var numPage = document.getElementById('numPage').value
+    console.log(author)
+    var book = new Book(title,author,numPage) //create new book obj
+    addBookToLibrary(book) // push book to lib array
+    document.getElementById("bookForm").reset() //reset the form
+    displayArray(myLibrary)
+})
+
+//creates the display for each book object in the library array
+const container = document.getElementById("bookCards")
+function displayArray(array){
+    if (array.length === 0){
+        return
+    }else{
+        document.querySelectorAll('.bookCard').forEach(e => e.remove())
+        array.forEach(book => {
+            const newCard = document.createElement('div')
+            newCard.classList.add('bookCard')
+
+            htitle = document.createElement('h2')
+            htitle.innerHTML = book.title
+            p1 = document.createElement('p')
+            p1.innerHTML = 'by<br>' + book.author +'<br><br># of pages: ' + book.numPages
+            readButton = document.createElement('button')
+            readButton.classList.add("readButton")
+            readButton.innerHTML = 'Finished'
+            deleteButton = document.createElement('button')
+            deleteButton.classList.add('deleteButton')
+            deleteButton.innerHTML = 'Remove Book'
+
+            newCard.appendChild(htitle)
+            newCard.appendChild(p1)
+            newCard.appendChild(readButton)
+            newCard.appendChild(deleteButton)
+
+            container.appendChild(newCard)
+
+        })
+    }
+}
+
 
 // TODO:
-// Add a function that loops thru the Lib array and displays each book on a card
-// Add a NEW BOOK button that brings up a form to create a new book obj
 // Add a button to each books card to remove it from the lib
 // Add a button to change a book cards read status
 // ?? maybe add localstorage options (or cloud storage if we wanna get crzy)

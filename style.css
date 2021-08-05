@@ -86,6 +86,26 @@ form{
     margin:12px;
 }
 .bookCard button{
+    width:120px;
+    bottom:40px;
+    left:50%;
+    background-color: rgb(238, 218, 195);
+
+}
+.readButton{
+    font-size: large;
+    height:50px;
+    color:rgb(32, 121, 5);
+    margin-top: 15px;
+}
+.deleteButton{
+    margin-top: 20px;
+    height: 28px;
+    font-size:medium;
+    color:rgb(133, 55, 55);
+}
+
+/* .bookCard button{
     position: absolute;
     width:120px;
     height:40px;
@@ -97,4 +117,4 @@ form{
     color:rgb(32, 121, 5);
 
 
-}
+} */
