@@ -1,5 +1,6 @@
 let myLibrary = [];
 
+
 // set up a book obj
 function Book(title,author,numPages) {
     this.title = title
@@ -8,11 +9,22 @@ function Book(title,author,numPages) {
     this.readStatus = false
 }
 
+Book.prototype.changeStatus = function(){
+    if (this.readStatus === false){
+        this.readStatus = true
+    }else{
+        this.readStatus = false
+    }
+}
 // add new book object to the Lib
 function addBookToLibrary(bookObj) {
     myLibrary.push(bookObj)
     console.log(myLibrary)
 }
+
+// test variable so I dont have to do this 1000 times
+var testobj = new Book('GOT','GRRM','1000')
+addBookToLibrary(testobj)
 
 // query Selectors that select elements related to the modal popup form
 const openModalButton = document.querySelector('[data-modal-target]')
@@ -64,7 +76,7 @@ function displayArray(array){
         return
     }else{
         document.querySelectorAll('.bookCard').forEach(e => e.remove())
-        array.forEach(book => {
+        array.forEach((book,index) => {
             const newCard = document.createElement('div')
             newCard.classList.add('bookCard')
 
@@ -74,9 +86,11 @@ function displayArray(array){
             p1.innerHTML = 'by<br>' + book.author +'<br><br># of pages: ' + book.numPages
             readButton = document.createElement('button')
             readButton.classList.add("readButton")
-            readButton.innerHTML = 'Finished'
+            readButton.innerHTML = 'Reading'
+            readButton.setAttribute('data-index',index)
             deleteButton = document.createElement('button')
             deleteButton.classList.add('deleteButton')
+            deleteButton.setAttribute('data-index',index)
             deleteButton.innerHTML = 'Remove Book'
 
             newCard.appendChild(htitle)
@@ -85,11 +99,49 @@ function displayArray(array){
             newCard.appendChild(deleteButton)
 
             container.appendChild(newCard)
-
+            setButtons()
         })
     }
 }
+displayArray(myLibrary)
 
+function setButtons(){
+    const removeButtons = document.querySelectorAll(".deleteButton")
+    const readButtons = document.querySelectorAll(".readButton")
+    removeButtons.forEach(button => {
+        button.addEventListener('click',() => {
+            index = button.getAttribute('data-index')
+            console.log(index)
+            button.closest('.bookCard').remove()
+            myLibrary.splice(parseInt(index))
+            console.log(myLibrary)
+        })
+    })
+    readButtons.forEach(button => {
+        button.addEventListener('click',() => {
+            changeButtonStatus(button)
+            console.log(myLibrary)
+        })
+    })
+
+}
+
+function changeButtonStatus (button) {
+    index = button.getAttribute('data-index')
+    myLibrary[index].changeStatus()
+    console.log(myLibrary[index].title)
+    var status = myLibrary[index].readStatus
+    console.log(status)
+    console.log('button press')
+    if (status === false){
+        button.innerHTML= 'Reading'
+        button.style.color = 'darkmagenta'
+    }else{
+        button.innerHTML = 'Finished'
+        button.style.color='green'
+    }
+    
+}
 
 // TODO:
 // Add a button to each books card to remove it from the lib

@@ -95,11 +95,11 @@ form{
 .readButton{
     font-size: large;
     height:50px;
-    color:rgb(32, 121, 5);
+    color: darkmagenta;
     margin-top: 15px;
 }
 .deleteButton{
-    margin-top: 20px;
+    margin-top: 15px;
     height: 28px;
     font-size:medium;
     color:rgb(133, 55, 55);
