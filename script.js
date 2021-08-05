@@ -13,6 +13,29 @@ function addBookToLibrary(bookObj) {
     myLibrary.push(bookObj)
 }
 
+const openModalButton = document.querySelector('[data-modal-target]')
+const closeModalButton = document.querySelector('[data-modal-close]')
+const overlay = document.getElementById('overlay')
+
+openModalButton.addEventListener('click',() =>{
+    const modal = document.querySelector(openModalButton.dataset.modalTarget)
+    openModal(modal)
+})
+closeModalButton.addEventListener('click',() =>{
+    const modal = closeModalButton.closest('.modal')
+    closeModal(modal)
+})
+function openModal(modal){
+    if(modal == null) return
+    modal.classList.add('active')
+    overlay.classList.add('active')
+}
+function closeModal(modal){
+    if(modal == null) return
+    modal.classList.remove('active')
+    overlay.classList.remove('active')
+}
+
 // TODO:
 // Add a function that loops thru the Lib array and displays each book on a card
 // Add a NEW BOOK button that brings up a form to create a new book obj

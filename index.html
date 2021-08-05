@@ -12,7 +12,29 @@
                 <h1>Your Virtual Library</h1>
             </div>
             <div id="pageHeaderBottom">
-                <button id="addNewBook">Add New Book</button>
+                <button data-modal-target="#modal" id="addNewBook">Add New Book</button>
+            </div>
+            <div class="modal" id="modal">
+                <div class="modal-header">
+                    <h3>Add a New Book</h3>
+                    <button data-modal-close class="close-button">&times;</button>
+                </div>
+                <div class="form">
+                    <form>
+                        <div>
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="title">
+                        </div>
+                        <div>
+                        <label for="author">Author</label>
+                        <input type="text" name="author" id="author">
+                        </div>
+                        <div>
+                        <label for="numPage">Number of Pages</label>
+                        <input type="text" name="numPage" id="numPage">
+                        </div>
+                    </form>
+                </div>
             </div>
         </header>
         <main>
@@ -24,11 +46,11 @@
                     <p># of pages: </p>
                     <button>Read</button>
                 </div>
-
             </div>
         </main>
         <footer>
 
         </footer>
+    <div id="overlay"></div>
     </body>
 </html>
