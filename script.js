@@ -87,10 +87,10 @@ function displayArray(array){
             readButton = document.createElement('button')
             readButton.classList.add("readButton")
             readButton.innerHTML = 'Reading'
-            readButton.setAttribute('data-index',index)
+            readButton.setAttribute('data-read-index',index)
             deleteButton = document.createElement('button')
             deleteButton.classList.add('deleteButton')
-            deleteButton.setAttribute('data-index',index)
+            deleteButton.setAttribute('data-delete-index',index)
             deleteButton.innerHTML = 'Remove Book'
 
             newCard.appendChild(htitle)
@@ -99,35 +99,40 @@ function displayArray(array){
             newCard.appendChild(deleteButton)
 
             container.appendChild(newCard)
-            setButtons()
-        })
-    }
-}
-displayArray(myLibrary)
 
-function setButtons(){
-    const removeButtons = document.querySelectorAll(".deleteButton")
-    const readButtons = document.querySelectorAll(".readButton")
-    removeButtons.forEach(button => {
-        button.addEventListener('click',() => {
-            index = button.getAttribute('data-index')
-            console.log(index)
-            button.closest('.bookCard').remove()
-            myLibrary.splice(parseInt(index))
-            console.log(myLibrary)
+            const deleteButtonID = document.querySelector("[data-delete-index=\'" + index + "\']")
+            deleteButtonID.addEventListener('click',() => {
+                index = deleteButtonID.getAttribute('data-delete-index')
+                console.log(index)
+                deleteButtonID.closest('.bookCard').remove()
+                console.log(myLibrary)
+                // myLibrary.splice(parseInt(index),1)
+                delete myLibrary[parseInt(index)]
+
+                
+            })
+            // const readButtonID = document.querySelector("[data-read-index =\'" + index + "\']")
+            // readButtonID.addEventListener('click',() => {
+            //     changeButtonStatus(readButtonID)
+            //     console.log(myLibrary)
+            //     })
+
         })
-    })
-    readButtons.forEach(button => {
-        button.addEventListener('click',() => {
+        }
+    const readButtonID = document.querySelectorAll("[data-read-index]")
+    readButtonID.forEach(button => {
+            button.addEventListener('click',() => {
             changeButtonStatus(button)
             console.log(myLibrary)
-        })
+            })
     })
+    }
+displayArray(myLibrary)
 
-}
 
 function changeButtonStatus (button) {
-    index = button.getAttribute('data-index')
+    index = button.getAttribute('data-read-index')
+    console.log(index)
     myLibrary[index].changeStatus()
     console.log(myLibrary[index].title)
     var status = myLibrary[index].readStatus
@@ -147,3 +152,19 @@ function changeButtonStatus (button) {
 // Add a button to each books card to remove it from the lib
 // Add a button to change a book cards read status
 // ?? maybe add localstorage options (or cloud storage if we wanna get crzy)
+
+// const readingButtons = document.querySelectorAll('.readButton')
+// readingButtons.forEach(button =>{
+//     button.addEventListener('click',() => {
+//     changeButtonStatus(button)
+//     console.log(myLibrary)
+//     })
+// })
+// const deleteButtons = document.querySelectorAll('.deleteButton')
+//     deleteButtons.forEach(button => {
+//         button.addEventListener('click',() => {
+//             index = button.getAttribute('data-index')
+//             console.log(index)
+//             button.closest('.bookCard').remove()
+//             myLibrary.splice(parseInt(index))
+//             console.log(myLibrary)
