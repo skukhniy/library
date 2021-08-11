@@ -1,5 +1,9 @@
-let myLibrary = [];
-
+if (localStorage.hasOwnProperty("Library") === false){
+    console.log("hi")
+    localStorage.setItem('Library',JSON.stringify([]))
+    console.log(localStorage.Library)
+}
+var myLibrary = JSON.parse(localStorage.getItem('Library'))
 
 // set up a book obj
 function Book(title,author,numPages) {
@@ -19,12 +23,15 @@ Book.prototype.changeStatus = function(){
 // add new book object to the Lib
 function addBookToLibrary(bookObj) {
     myLibrary.push(bookObj)
+    localStorage.setItem('Library',JSON.stringify(myLibrary))
     console.log(myLibrary)
 }
 
 // test variable so I dont have to do this 1000 times
-var testobj = new Book('GOT','GRRM','1000')
-addBookToLibrary(testobj)
+// var testobj = new Book('GOT','GRRM','1000')
+// addBookToLibrary(testobj)
+
+
 
 // query Selectors that select elements related to the modal popup form
 const openModalButton = document.querySelector('[data-modal-target]')
@@ -105,9 +112,10 @@ function displayArray(array){
                 index = deleteButtonID.getAttribute('data-delete-index')
                 console.log(index)
                 deleteButtonID.closest('.bookCard').remove()
-                console.log(myLibrary)
                 // myLibrary.splice(parseInt(index),1)
                 delete myLibrary[parseInt(index)]
+                localStorage.setItem('Library',JSON.stringify(myLibrary))
+                console.log(localStorage.Library)
 
                 
             })
@@ -145,7 +153,6 @@ function changeButtonStatus (button) {
         button.innerHTML = 'Finished'
         button.style.color='green'
     }
-    
 }
 
 // TODO:
