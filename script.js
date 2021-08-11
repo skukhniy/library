@@ -13,7 +13,7 @@ function Book(title,author,numPages) {
     this.readStatus = false
 }
 
-Book.prototype.changeStatus = function(){
+Object.prototype.changeStatus = function(){
     if (this.readStatus === false){
         this.readStatus = true
     }else{
@@ -61,6 +61,9 @@ function closeModal(modal){
     modal.classList.remove('active')
     overlay.classList.remove('active')
 }
+
+
+
 // on clicking submit the inputs will be gathered to create a new card.
 btnSubmit.addEventListener('click',()=>{
     console.log('title =')
@@ -79,53 +82,66 @@ btnSubmit.addEventListener('click',()=>{
 //creates the display for each book object in the library array
 const container = document.getElementById("bookCards")
 function displayArray(array){
-    if (array.length === 0){
+    if (array.length === 0){ //returns an empty display if the array is empty
+        return
+    }else if (array.every(element => element === null)){ //if the entire array is full of nulls reset the local storage
+        localStorage.clear()
+        localStorage.setItem('Library',JSON.stringify([]))
         return
     }else{
         document.querySelectorAll('.bookCard').forEach(e => e.remove())
         array.forEach((book,index) => {
-            const newCard = document.createElement('div')
-            newCard.classList.add('bookCard')
+            if (book === null){ //checks if the array has null values
+                return
+            }else{
+                const newCard = document.createElement('div')
+                newCard.classList.add('bookCard')
 
-            htitle = document.createElement('h2')
-            htitle.innerHTML = book.title
-            p1 = document.createElement('p')
-            p1.innerHTML = 'by<br>' + book.author +'<br><br># of pages: ' + book.numPages
-            readButton = document.createElement('button')
-            readButton.classList.add("readButton")
-            readButton.innerHTML = 'Reading'
-            readButton.setAttribute('data-read-index',index)
-            deleteButton = document.createElement('button')
-            deleteButton.classList.add('deleteButton')
-            deleteButton.setAttribute('data-delete-index',index)
-            deleteButton.innerHTML = 'Remove Book'
+                htitle = document.createElement('h2')
+                htitle.innerHTML = book.title
+                p1 = document.createElement('p')
+                p1.innerHTML = 'by<br>' + book.author +'<br><br># of pages: ' + book.numPages
+                readButton = document.createElement('button')
+                readButton.classList.add("readButton")
+                if (book.readStatus === false){
+                    readButton.innerHTML= 'Reading'
+                    readButton.style.color = 'darkmagenta'
+                }else{
+                    readButton.innerHTML = 'Finished'
+                    readButton.style.color='green'
+                }
+                readButton.setAttribute('data-read-index',index)
+                deleteButton = document.createElement('button')
+                deleteButton.classList.add('deleteButton')
+                deleteButton.setAttribute('data-delete-index',index)
+                deleteButton.innerHTML = 'Remove Book'
 
-            newCard.appendChild(htitle)
-            newCard.appendChild(p1)
-            newCard.appendChild(readButton)
-            newCard.appendChild(deleteButton)
+                newCard.appendChild(htitle)
+                newCard.appendChild(p1)
+                newCard.appendChild(readButton)
+                newCard.appendChild(deleteButton)
 
-            container.appendChild(newCard)
+                container.appendChild(newCard)
 
-            const deleteButtonID = document.querySelector("[data-delete-index=\'" + index + "\']")
-            deleteButtonID.addEventListener('click',() => {
-                index = deleteButtonID.getAttribute('data-delete-index')
-                console.log(index)
-                deleteButtonID.closest('.bookCard').remove()
-                // myLibrary.splice(parseInt(index),1)
-                delete myLibrary[parseInt(index)]
-                localStorage.setItem('Library',JSON.stringify(myLibrary))
-                console.log(localStorage.Library)
+                const deleteButtonID = document.querySelector("[data-delete-index=\'" + index + "\']")
+                deleteButtonID.addEventListener('click',() => {
+                    index = deleteButtonID.getAttribute('data-delete-index')
+                    console.log(index)
+                    deleteButtonID.closest('.bookCard').remove()
+                    // myLibrary.splice(parseInt(index),1)
+                    delete myLibrary[parseInt(index)]
+                    localStorage.setItem('Library',JSON.stringify(myLibrary))
+                    console.log(localStorage.Library)
 
-                
+                    
+                })
+                // const readButtonID = document.querySelector("[data-read-index =\'" + index + "\']")
+                // readButtonID.addEventListener('click',() => {
+                //     changeButtonStatus(readButtonID)
+                //     console.log(myLibrary)
+                //     })
+            }
             })
-            // const readButtonID = document.querySelector("[data-read-index =\'" + index + "\']")
-            // readButtonID.addEventListener('click',() => {
-            //     changeButtonStatus(readButtonID)
-            //     console.log(myLibrary)
-            //     })
-
-        })
         }
     const readButtonID = document.querySelectorAll("[data-read-index]")
     readButtonID.forEach(button => {
@@ -135,9 +151,10 @@ function displayArray(array){
             })
     })
     }
-displayArray(myLibrary)
+displayArray(myLibrary) //displays the current array on page startup
 
 
+// function to change a book objs read status on button click
 function changeButtonStatus (button) {
     index = button.getAttribute('data-read-index')
     console.log(index)
@@ -149,9 +166,13 @@ function changeButtonStatus (button) {
     if (status === false){
         button.innerHTML= 'Reading'
         button.style.color = 'darkmagenta'
+        button.readStatus = true
+        localStorage.setItem('Library',JSON.stringify(myLibrary))
     }else{
         button.innerHTML = 'Finished'
         button.style.color='green'
+        button.readStatus = false
+        localStorage.setItem('Library',JSON.stringify(myLibrary))
     }
 }
 
