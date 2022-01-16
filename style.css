@@ -27,12 +27,18 @@
     background-color: white;
     width:300px;
     max-width:80%;
-    height:225px;
+    height:240px;
+}
+.modal p{
+  text-align: center;
+  color: red;
+}
+#bookForm{
+  padding-right: 20%;
 }
 .form{
-    margin:0 auto;
+    margin:auto;
     text-align: right;
-    padding-right: 20%;
 }
 form{
     padding: 10px;
@@ -56,7 +62,7 @@ input{
 }
 #btnSubmit{
     margin-top: 0px;
-    margin-right:25%;
+    margin-right:40%;
 }
 
 .modal.active{

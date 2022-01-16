@@ -38,6 +38,7 @@ const openModalButton = document.querySelector('[data-modal-target]')
 const closeModalButtons = document.querySelectorAll('[data-modal-close]')
 const overlay = document.getElementById('overlay')
 const btnSubmit = document.getElementById('btnSubmit')
+const errorMessage = document.getElementById('errorMessage')
 
 //will add an active class so the form pops up
 openModalButton.addEventListener('click',() =>{
@@ -46,6 +47,7 @@ openModalButton.addEventListener('click',() =>{
 })
 // removes the active class so the form goes down
 closeModalButtons.forEach(button => {
+  console.log(button)
     button.addEventListener('click',() =>{
     const modal = button.closest('.modal')
     closeModal(modal)
@@ -60,23 +62,33 @@ function closeModal(modal){
     if(modal == null) return
     modal.classList.remove('active')
     overlay.classList.remove('active')
+    errorMessage.innerText = ''
 }
 
 
 
 // on clicking submit the inputs will be gathered to create a new card.
 btnSubmit.addEventListener('click',()=>{
-    console.log('title =')
-    var title = document.getElementById('title').value
-    console.log(title)
+    let errorMessages=[] //array to store error messages
+    let modal = btnSubmit.closest('.modal') //modal form
+    var title = document.getElementById('title').value 
     var author = document.getElementById('author').value
-    console.log(author)
     var numPage = document.getElementById('numPage').value
-    console.log(author)
-    var book = new Book(title,author,numPage) //create new book obj
-    addBookToLibrary(book) // push book to lib array
-    document.getElementById("bookForm").reset() //reset the form
-    displayArray(myLibrary)
+
+    if (title === '' || author === '' || numPage === ''){ //check if all fields are filled
+      errorMessages.push('Error');
+      errorMessage.innerText = '*Please Enter All Fields*'
+    }else if(isNaN(numPage)){ // check is the page number is filled with a number
+      errorMessages.push('Error')
+      errorMessage.innerText = "*Enter a Number (0-9) for '# of Pages'*"
+    }
+    if (errorMessages.length < 0){ // if there is an error, add error text and dont allow the page to close. 
+      var book = new Book(title,author,numPage) //create new book obj
+      addBookToLibrary(book) // push book to lib array
+      document.getElementById("bookForm").reset() //reset the form
+      displayArray(myLibrary) //reset display
+      closeModal(modal) //close modal form
+    }
 })
 
 //creates the display for each book object in the library array
